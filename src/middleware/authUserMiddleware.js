@@ -73,7 +73,7 @@ const authUser = async (req, res, next) => {
             return res.status(401).json({ error: `${role} Id not found` });
         }
 
-        console.log('middleware', req.userDetails)
+        //console.log('middleware', req.userDetails)
         next()
     }
     catch (err) {

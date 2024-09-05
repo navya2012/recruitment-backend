@@ -1,4 +1,4 @@
-const { jobRecruitmentModel } = require("../models/recruitmentSchema")
+const { jobRecruitmentModel, jobAppliedPostsModel } = require("../models/recruitmentSchema")
 const { userDetailsModel } = require("../models/usersSchema")
 
 //employee
@@ -15,50 +15,43 @@ const getJobRecruitmentPosts = async (req, res) => {
 
 //update job applied status by employee
 const updateJobAppliedStatus = async (req, res) => {
-    const jobId = req.params.id
+    const jobId = req.params.id;
     const employeeDetails = req.user
 
     try {
 
-        if (!jobId) {
-            return res.status(404).json({ error: 'Job Post ID is not provided' });
+        const jobPost = await jobRecruitmentModel.findOne({_id: jobId});
+        if (!jobPost) {
+            return res.status(404).json({ error: 'job Post not found' });
         }
 
-        const updatedJobPosts = await jobRecruitmentModel.findOneAndUpdate(
-            { _id: jobId, },
-            {
-                $set: {
-                    "jobAppliedStatus.status": "Applied",
-                    "jobAppliedStatus.employeeDetails": {
-                        employee_id: employeeDetails._id,
-                        email: employeeDetails.email,
-                        mobileNumber: employeeDetails.mobileNumber,
-                        firstName: employeeDetails.firstName,
-                        lastName: employeeDetails.lastName,
-                        jobAppliedDate: new Date() 
-                    }
-                }
-            },
-            { new: true }
-        );
-
-        if (!updatedJobPosts) {
-            return res.status(404).json({ error: "Job post not found" });
+        const existingApplication = await jobAppliedPostsModel.findOne({ jobId, employee_id: req.user._id });
+        if (existingApplication) {
+            return res.status(400).json({ error: 'You have already applied to this job.' });
         }
-
-
-        res.status(200).json({
-            message: 'Applied for this Job',
-            jobId: updatedJobPosts._id, 
-            employer_id:updatedJobPosts.employer_id,
-            companyName:updatedJobPosts.companyName,
-            role:updatedJobPosts.role,
-            technologies:updatedJobPosts.technologies,
-            jobAppliedStatus: {
-                status: updatedJobPosts.jobAppliedStatus.status,
-                employeeDetails: updatedJobPosts.jobAppliedStatus.employeeDetails
-            }
+        
+        const jobApplication = await jobAppliedPostsModel.create({
+            jobId: jobPost._id,
+            employer_id: jobPost.employer_id,
+            companyName:jobPost.companyName,
+            role:jobPost.role,
+            hasApplied: true,
+            employee_id : employeeDetails._id,
+            email : employeeDetails.email,
+            mobileNumber: employeeDetails.mobileNumber,
+            firstName: employeeDetails.firstName,
+            lastName: employeeDetails.lastName,
+            jobAppliedDate: new Date()
         });
+
+        res.status(201).json({
+            message: 'Successfully applied for the job',
+            jobApplication
+        });
+
+        // if (!updatedJobPosts) {
+        //     return res.status(404).json({ error: "Job post not found" });
+        // }
 
     }
     catch (err) {
@@ -71,24 +64,28 @@ const getJobAppliedPosts = async (req, res) => {
     const employer_id = req.user._id
     try {
 
-        const appliedJobPosts = await jobRecruitmentModel.find({
-            "jobAppliedStatus.status": "Applied",
+        const appliedJobPosts = await jobAppliedPostsModel.find({
+            hasApplied: true,
                 employer_id :employer_id
-        })
+        })  
 
         if (appliedJobPosts.length === 0) {
             return res.status(404).json({ error: "No applied job posts found" });
         }
 
         const jobAppliedPostsList = appliedJobPosts.map(job => ({
-            jobId: job._id,
+            jobId: job.jobId,
             employer_id: job.employer_id,
             companyName: job.companyName,
             role: job.role,
-            jobAppliedStatus: {
-                status: job.jobAppliedStatus.status,
-                employeeDetails: job.jobAppliedStatus.employeeDetails
-            }
+            hasApplied: true,
+            employee_id : job._id,
+            email : job.email,
+            mobileNumber: job.mobileNumber,
+            firstName: job.firstName,
+            lastName: job.lastName,
+            jobAppliedDate: job.jobAppliedDate
+
         }));
 
         res.status(200).json({

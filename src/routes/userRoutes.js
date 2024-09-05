@@ -19,15 +19,16 @@ router.post('/employee/working-experience', authUserDetails('employee'), working
 router.get('/employee/working-experience', authUserDetails('employee'), getWorkingExperience)
 
 // job posts
+//employer
 router.post('/employer/create-recruitment-posts', authUserDetails('employer'), createJobRecruitmentPosts);
 router.patch('/employer/update-recruitment-posts/:id', authUserDetails('employer'), updateJobRecruitmentPosts )
 router.get('/employer/get-recruitment-posts', authUserDetails('employer'), getJobPosts )
 router.delete('/employer/delete-recruitment-posts/:id', authUserDetails('employer'), deleteJobPosts )
 router.get('/employer/applied-job-posts', authUserDetails('employer'), getJobAppliedPosts)
 
-
-router.get('/employee/get-recruitment-posts', authUserDetails('employee'), getJobRecruitmentPosts);
-router.patch('/employee/update-job-applied-status/:id', authUserDetails('employee'), updateJobAppliedStatus )
+//employee
+router.get('/employee/get-recruitment-posts', getJobRecruitmentPosts);
+router.post('/employee/update-job-applied-status/:id', authUserDetails('employee'), updateJobAppliedStatus )
 
 
 

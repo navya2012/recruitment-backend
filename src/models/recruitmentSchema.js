@@ -39,42 +39,57 @@ const recruitmentSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    jobAppliedStatus: {
-        status: {
-            type: String,
-            enum: ['Applied', 'Denied'],
-            required: true,
-            default: "Denied"
-        },
-        employeeDetails: {
-            employee_id:{
-                type:String
-            },
-            email:{
-                type:String
-            },
-            mobileNumber:{
-                type:String
-            },
-            firstName:{
-                type:String
-            },
-            lastName:{
-                type:String
-            },
-            jobAppliedDate: {
-                type: Date
-    
-            }
-        },       
-    }
-
 },
+    { timestamp: true }
+)
+
+const jobAppliedSchema = mongoose.Schema({
+    jobId: {
+        type: String
+    },
+    employer_id: {
+        type: String
+    },
+    companyName:{
+        type:String
+    },
+    role:{
+        type:String
+    },
+    hasApplied: {
+        type: Boolean,
+        required: true,
+        default: false 
+    },
+    employee_id: {
+        type: String
+    },
+    email: {
+        type: String
+    },
+    mobileNumber: {
+        type: String
+    },
+    firstName: {
+        type: String
+    },
+    lastName: {
+        type: String
+    },
+    jobAppliedDate: {
+        type: Date
+
+    }
+},
+
     { timestamp: true }
 )
 
 const jobRecruitmentModel = new mongoose.model("jobRecruitment", recruitmentSchema)
 
+const jobAppliedPostsModel = new mongoose.model("jobAppliedPosts", jobAppliedSchema)
+
 module.exports = {
-    jobRecruitmentModel
+    jobRecruitmentModel,
+    jobAppliedPostsModel
 }
