@@ -62,6 +62,7 @@ const authUser = async (req, res, next) => {
 
         // checking token entered by user and generated at time of login is same or not 
         const { _id, role, email } = jwt.verify(token, process.env.JWT_TOKEN)
+
         if (!_id || !role || !email) {
             return res.status(401).json({ error: "Invalid token" });
         }
@@ -72,7 +73,7 @@ const authUser = async (req, res, next) => {
             return res.status(401).json({ error: `${role} Id not found` });
         }
 
-        //after checking move to next operations
+        console.log('middleware', req.userDetails)
         next()
     }
     catch (err) {

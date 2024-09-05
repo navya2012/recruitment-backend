@@ -17,7 +17,7 @@ const getJobRecruitmentPosts = async (req, res) => {
 const updateJobAppliedStatus = async (req, res) => {
     const jobId = req.params.id
     const employeeDetails = req.user
-    console.log('first', employeeDetails )
+
     try {
 
         if (!jobId) {
@@ -66,10 +66,9 @@ const updateJobAppliedStatus = async (req, res) => {
     }
 }
 
-//get job applied status by employee
+//get job applied status by employer
 const getJobAppliedPosts = async (req, res) => {
     const employer_id = req.user._id
-    console.log(employer_id)
     try {
 
         const appliedJobPosts = await jobRecruitmentModel.find({

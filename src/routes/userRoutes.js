@@ -26,7 +26,7 @@ router.delete('/employer/delete-recruitment-posts/:id', authUserDetails('employe
 router.get('/employer/applied-job-posts', authUserDetails('employer'), getJobAppliedPosts)
 
 
-router.get('/employee/get-recruitment-posts',  getJobRecruitmentPosts);
+router.get('/employee/get-recruitment-posts', authUserDetails('employee'), getJobRecruitmentPosts);
 router.patch('/employee/update-job-applied-status/:id', authUserDetails('employee'), updateJobAppliedStatus )
 
 

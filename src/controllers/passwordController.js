@@ -1,11 +1,19 @@
 const { userDetailsModel } = require("../models/usersSchema");
-const { generateOtp, transporter } = require("./userController");
 const bcrypt = require('bcrypt')
 const { check, validationResult } = require('express-validator');
+const { generateOtp } = require("../utilities/otp");
 
+
+// password validation
+const changePasswordValidation = [
+    check('newPassword')
+        .isLength({ min: 8 })
+        .withMessage('New password must be at least 8 characters long')
+        .matches(/[a-z]/).withMessage('New password must contain a lowercase letter')
+];
 
 const forgotPassword = async (req, res) => {
-    const { email } = req.userDetails
+    const { email } = req.body
     try {
 
         const user = await userDetailsModel.findOne({ email })
@@ -16,16 +24,10 @@ const forgotPassword = async (req, res) => {
         //otp
         const otp = await generateOtp()
         user.otp = otp
+        user.isVerified = false
         await user.save();
 
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: "Password Reset Request",
-            html: `Your OTP for password reset is: ${otp}`
-        };
-
-        await transporter.sendMail(mailOptions);
+        await send(email, otp);
 
         res.status(200).json({ message: "OTP sent to email for password reset." });
 
@@ -35,16 +37,44 @@ const forgotPassword = async (req, res) => {
     }
 }
 
-// password validation
-const resetPasswordValidation = [
-    check('newPassword')
-        .isLength({ min: 8 })
-        .withMessage('New password must be at least 8 characters long')
-        .matches(/[a-z]/).withMessage('New password must contain a lowercase letter')
-];
+//update password
+const updatePassword = async (req, res) => {
+    const { newPassword } = req.body
+    const { email } = req.userDetails
+
+     try {
+        //validation check
+        const errors = validationResult(req).formatWith(({ msg }) => {
+            return { msg };
+        });
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ error: errors.array() });
+        }
+
+        const user = await userDetailsModel.findOne({ email })
+        if (!user) {
+            return res.status(400).json({ error: "Email not found!" });
+        }
+        if (!user.isVerified) {
+            return res.status(400).json({ error: "Email not verified. Please verify your email before resetting the password." });
+        }
+
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(newPassword, salt)
+        user.password = hashedPassword;
+        await user.save();
+
+        res.status(200).json({ message: "Password updated successfully." });
+
+    }
+    catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+
+}
 
 //reset password
-const resetPassword = async (req, res) => {
+const changePassword = async (req, res) => {
     const { oldPassword, newPassword } = req.body
     const { email } = req.userDetails
     try {
@@ -94,6 +124,7 @@ const resetPassword = async (req, res) => {
 
 module.exports = {
     forgotPassword,
-    resetPassword,
-    resetPasswordValidation
+    changePasswordValidation,
+    changePassword,
+    updatePassword
 }

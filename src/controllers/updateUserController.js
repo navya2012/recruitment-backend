@@ -5,7 +5,7 @@ const { validationResult } = require('express-validator');
 //update
 const updateUserDetails = async (req, res) => {
     const { role, _id} = req.user; 
-    //console.log("update details", role, _id)
+
     try {
         // Validation check (if needed)
         const error = validationResult(req).formatWith(({ msg }) => {

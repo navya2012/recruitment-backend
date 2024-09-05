@@ -16,12 +16,14 @@ const userDetailsSchema = mongoose.Schema({
     password: {
         type: String,
         required: true,
-        minlength: 8
     },
     mobileNumber: {
         type: Number,
         required: true,
         minlength: 10
+    },
+    profileImage: {
+        type: String
     },
 
     //employer
@@ -85,20 +87,23 @@ const userDetailsSchema = mongoose.Schema({
 
 
 // users static signup function
-userDetailsSchema.statics.signup = async (role, email, password, mobileNumber,  companyName, companyType, address, firstName, lastName, otp) => {
+userDetailsSchema.statics.signup = async (role, email, password, mobileNumber, profileImage, companyName, companyType, address, firstName, lastName, otp) => {
 
     // checking user exists or not
     const exists = await userDetailsModel.findOne({ email, role })
     if (exists) {
         throw Error(`Email already exists for this ${role} role!`)
     }
-
+console.log(password)
     //password
-    const salt = await bcrypt.genSalt(10)
-    const hash = await bcrypt.hash(password, salt)
+    const salt = await bcrypt.genSalt(10);
+    console.log('Salt:', salt);
+    const hash = await bcrypt.hash(password, salt);
+    console.log('Hash:', hash);
 
-    const userSignup = await userDetailsModel.create({role, email, mobileNumber, role, companyName, companyType, address, firstName, lastName, password: hash,otp, isVerified:false})
-
+    const userSignup = await userDetailsModel.create({role, email, mobileNumber, profileImage, role, companyName, companyType, address, firstName, lastName, password: hash, otp, isVerified:false})
+    
+console.log('users', userSignup)
     return userSignup
 }
 
