@@ -15,8 +15,8 @@ router.post('/verify-otp', authUser, verifyOtp)
 router.post('/resend-otp', authUser, resendOtp)
 router.post('/login', userLoginDetails) 
 router.post('/profile-pic-upload', authUser, uploadFiles.single('profileImage'), userProfileImageUpload )
-router.post('/forgot-password',authUser, forgotPassword)
-router.post('/update-password',authUser, updatePassword)
+router.post('/forgot-password', forgotPassword)
+router.post('/update-password',authUser,changePasswordValidation, updatePassword)
 router.post('/change-password', authUser, changePasswordValidation, changePassword)
 
 

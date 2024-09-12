@@ -9,7 +9,7 @@ const app= express()
 
 const port = process.env.PORT || 5000
 
-//middleware
+//middleware    
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(cors())
@@ -18,12 +18,14 @@ app.use(cors())
 require('./db/connection')
 
 //require routes
-const userRoutes = require('./routes/userRoutes')
+const employeeRoutes = require('./routes/employeeRoutes')
+const employerRoutes = require('./routes/employerRoutes')
 const authRoutes = require("./routes/authRoutes")
 
 //routes 
 app.use('/api/auth', authRoutes )
-app.use('/api', userRoutes )
+app.use('/api/employee', employeeRoutes )
+app.use('/api/employer', employerRoutes )
 
 app.get("/", (req,res) => {
     res.send('hello')

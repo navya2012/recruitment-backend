@@ -1,66 +1,7 @@
 const { jobRecruitmentModel, jobAppliedPostsModel } = require("../models/recruitmentSchema")
-const { userDetailsModel } = require("../models/usersSchema")
-
-//employee
-//get recruitment posts - employee
-const getJobRecruitmentPosts = async (req, res) => {
-    try {
-        const getJobPostsData = await jobRecruitmentModel.find()
-        res.status(200).json({ getJobPostsData })
-    }
-    catch (err) {
-        res.status(400).json({ error: err.message })
-    }
-}
-
-//update job applied status by employee
-const updateJobAppliedStatus = async (req, res) => {
-    const jobId = req.params.id;
-    const employeeDetails = req.user
-
-    try {
-
-        const jobPost = await jobRecruitmentModel.findOne({_id: jobId});
-        if (!jobPost) {
-            return res.status(404).json({ error: 'job Post not found' });
-        }
-
-        const existingApplication = await jobAppliedPostsModel.findOne({ jobId, employee_id: req.user._id });
-        if (existingApplication) {
-            return res.status(400).json({ error: 'You have already applied to this job.' });
-        }
-        
-        const jobApplication = await jobAppliedPostsModel.create({
-            jobId: jobPost._id,
-            employer_id: jobPost.employer_id,
-            companyName:jobPost.companyName,
-            role:jobPost.role,
-            hasApplied: true,
-            employee_id : employeeDetails._id,
-            email : employeeDetails.email,
-            mobileNumber: employeeDetails.mobileNumber,
-            firstName: employeeDetails.firstName,
-            lastName: employeeDetails.lastName,
-            jobAppliedDate: new Date()
-        });
-
-        res.status(201).json({
-            message: 'Successfully applied for the job',
-            jobApplication
-        });
-
-        // if (!updatedJobPosts) {
-        //     return res.status(404).json({ error: "Job post not found" });
-        // }
-
-    }
-    catch (err) {
-        res.status(400).json({ error: err.message })
-    }
-}
 
 //get job applied status by employer
-const getJobAppliedPosts = async (req, res) => {
+const getAllJobAppliedPostsPostedByEmployer = async (req, res) => {
     const employer_id = req.user._id
     try {
 
@@ -68,9 +9,8 @@ const getJobAppliedPosts = async (req, res) => {
             hasApplied: true,
                 employer_id :employer_id
         })  
-
         if (appliedJobPosts.length === 0) {
-            return res.status(404).json({ error: "No applied job posts found" });
+            return res.status(200).json({ message: "No applied job posts found" });
         }
 
         const jobAppliedPostsList = appliedJobPosts.map(job => ({
@@ -79,7 +19,7 @@ const getJobAppliedPosts = async (req, res) => {
             companyName: job.companyName,
             role: job.role,
             hasApplied: true,
-            employee_id : job._id,
+            employee_id : job.employee_id,
             email : job.email,
             mobileNumber: job.mobileNumber,
             firstName: job.firstName,
@@ -98,8 +38,6 @@ const getJobAppliedPosts = async (req, res) => {
     }
 }
 
-
-//employer
 //post recruitment posts
 const createJobRecruitmentPosts = async (req, res) => {
     const { companyName, role, technologies, experience, location, graduation, languages, noticePeriod } = req.body
@@ -111,7 +49,7 @@ const createJobRecruitmentPosts = async (req, res) => {
         const newJobPostData = new jobRecruitmentModel(createPostFields)
         await newJobPostData.save()
 
-        res.status(201).json({ message: "Posted Successfully", newJobPostData })
+        res.status(200).json({ message: "Posted Successfully", newJobPostData })
     }
     catch (err) {
         res.status(400).json({ error: err.message })
@@ -119,11 +57,16 @@ const createJobRecruitmentPosts = async (req, res) => {
 }
 
 //get recruitment posts - employer
-const getJobPosts = async (req, res) => {
+const getAllJobPostsPostedByEmployer = async (req, res) => {
     const employer_id = req.user._id
     try {
 
         const getJobPostsList = await jobRecruitmentModel.find({ employer_id })
+
+        if (getJobPostsList.length === 0) {
+            return res.status(200).json({ message: "No job posts found for this employer" });
+          }
+
         res.status(200).json({ getJobPostsList })
     }
     catch (err) {
@@ -187,11 +130,9 @@ const deleteJobPosts = async (req, res) => {
 
 
 module.exports = {
-    getJobRecruitmentPosts,
     createJobRecruitmentPosts,
-    updateJobAppliedStatus,
     updateJobRecruitmentPosts,
-    getJobPosts,
+    getAllJobPostsPostedByEmployer,
     deleteJobPosts,
-    getJobAppliedPosts
+    getAllJobAppliedPostsPostedByEmployer,
 }

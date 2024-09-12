@@ -1,7 +1,8 @@
 const { userDetailsModel } = require("../models/usersSchema");
 const bcrypt = require('bcrypt')
 const { check, validationResult } = require('express-validator');
-const { generateOtp } = require("../utilities/otp");
+const { generateOtp, sendOtpForPasswordReset } = require("../utilities/otp");
+const createToken = require("../utilities/token");
 
 
 // password validation
@@ -27,9 +28,11 @@ const forgotPassword = async (req, res) => {
         user.isVerified = false
         await user.save();
 
-        await send(email, otp);
+        await sendOtpForPasswordReset(email, otp);
 
-        res.status(200).json({ message: "OTP sent to email for password reset." });
+        const token = createToken({ _id: user._id, role: user.role, email: user.email });
+
+        res.status(200).json({ message: "OTP sent to email for password reset.", token });
 
     }
     catch (error) {

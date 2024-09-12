@@ -56,6 +56,15 @@ const jobAppliedSchema = mongoose.Schema({
     role:{
         type:String
     },
+    technologies:{
+        type:String
+    },
+    experience:{
+        type:String
+    },
+    location:{
+        type:String
+    },
     hasApplied: {
         type: Boolean,
         required: true,
