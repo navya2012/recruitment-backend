@@ -12,7 +12,7 @@ const recruitmentSchema = mongoose.Schema({
         required: true
     },
     technologies: {
-        type: String,
+        type: [String],
         required: true
     },
     experience: {
@@ -28,7 +28,7 @@ const recruitmentSchema = mongoose.Schema({
         required: true
     },
     languages: {
-        type: String,
+        type: [String],
         required: true
     },
     noticePeriod: {
@@ -57,7 +57,7 @@ const jobAppliedSchema = mongoose.Schema({
         type:String
     },
     technologies:{
-        type:String
+        type:[String]
     },
     experience:{
         type:String

@@ -1,4 +1,3 @@
-
 const { userDetailsModel, profileImageModel } = require("../models/usersSchema");
 const { cloudinary } = require("../utilities/cloudinary");
 const { generateOtp, sendOtpEmail, sendResendOtp } = require("../utilities/otp");

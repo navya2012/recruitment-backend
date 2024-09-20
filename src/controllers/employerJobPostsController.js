@@ -1,4 +1,38 @@
 const { jobRecruitmentModel, jobAppliedPostsModel } = require("../models/recruitmentSchema")
+const { check, validationResult } = require('express-validator');
+
+
+//validation errors
+const capitalizeFirstLetter = (str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
+const jobPostsValidation = [
+    check('companyName').optional().trim().customSanitizer(value => value.toUpperCase()),
+    check('role').optional().trim().customSanitizer(value => capitalizeFirstLetter(value)),
+    check('technologies').optional()
+    .customSanitizer(value => {
+        if (Array.isArray(value)) {
+            return value.map(tech => capitalizeFirstLetter(tech));
+        }
+        if (typeof value === 'string') {
+            return [capitalizeFirstLetter(value)]; 
+        }
+        return [];
+    }),
+    check('experience').optional().trim().customSanitizer(value => capitalizeFirstLetter(value)),
+    check('location').optional().trim().customSanitizer(value => capitalizeFirstLetter(value)),
+    check('graduation').optional().trim().customSanitizer(value => capitalizeFirstLetter(value)),
+    check('languages').optional()
+    .customSanitizer(value => {
+        if (Array.isArray(value)) {
+            return value.map(lang => capitalizeFirstLetter(lang));
+        }
+        if (typeof value === 'string') {
+            return [capitalizeFirstLetter(value)]; 
+        }
+        return []; 
+    }),
+    check('noticePeriod').optional().trim().customSanitizer(value => capitalizeFirstLetter(value)),
+]
 
 //get job applied status by employer
 const getAllJobAppliedPostsPostedByEmployer = async (req, res) => {
@@ -44,6 +78,14 @@ const createJobRecruitmentPosts = async (req, res) => {
     const employer_id = req.user._id
 
     try {
+          // Validation check
+          const error = validationResult(req).formatWith(({ msg }) => {
+            return { msg };
+        });
+        if (!error.isEmpty()) {
+            return res.status(400).json({ error: error.array() });
+        }
+
         const createPostFields = { employer_id, companyName, role, technologies, experience, location, graduation, languages, noticePeriod }
 
         const newJobPostData = new jobRecruitmentModel(createPostFields)
@@ -130,6 +172,7 @@ const deleteJobPosts = async (req, res) => {
 
 
 module.exports = {
+    jobPostsValidation,
     createJobRecruitmentPosts,
     updateJobRecruitmentPosts,
     getAllJobPostsPostedByEmployer,
