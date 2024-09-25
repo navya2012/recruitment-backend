@@ -83,7 +83,7 @@ const userDetailsSchema = mongoose.Schema({
 )
 
 const profileImageSchema = mongoose.Schema({
-    _id:{
+    user_id:{
         type:String
     },
     role:{
@@ -91,7 +91,9 @@ const profileImageSchema = mongoose.Schema({
     },
     email: {
         type: String,
-        unique:true
+    },
+    image_name:{
+        type:String,
     },
     profileImage:{
         type:String,

@@ -72,21 +72,33 @@ const userProfileImageUpload = async (req, res) => {
         const result = await cloudinary.uploader.upload(filePath);
         const profileImageUrl = result.secure_url;
 
-        const profileImageRecord = await profileImageModel.findOneAndUpdate(
-            { _id: user._id },
-            {
-                _id: user._id,
+        const profileImageRecord = await profileImageModel.findOne({ user_id: _id, email: user.email });
+
+        if (profileImageRecord) {
+            profileImageRecord.profileImage = profileImageUrl;
+            profileImageRecord.image_name = result.original_filename;
+            profileImageRecord.role = user.role; 
+
+            await profileImageRecord.save(); 
+            return res.status(200).json({
+                message: 'Profile image updated successfully',
+                profileImageRecord
+            });
+        } else {
+            const newProfileImageRecord = new profileImageModel({
+                user_id: _id,
                 role: user.role,
                 email: user.email,
+                image_name: result.original_filename,
                 profileImage: profileImageUrl
-            },
-            { upsert: true, new: true }
-        );
+            });
 
-        res.status(200).json({
-            message: 'Profile image uploaded successfully',
-            profileImageRecord
-        });
+            await newProfileImageRecord.save(); 
+            return res.status(200).json({
+                message: 'Profile image uploaded successfully',
+                profileImageRecord: newProfileImageRecord
+            });
+        }
 
     } catch (error) {
         res.status(400).json({ error: error.message });
