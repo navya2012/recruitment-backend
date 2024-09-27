@@ -15,7 +15,7 @@ router.patch('/update-details', authUserDetails('employee'), signupValidation, u
 
 //working experience
 router.post('/working-experience', authUserDetails('employee'), workingExperienceController);
-router.get('/working-experience', authUserDetails('employee'), getWorkingExperience)
+router.get('/get-working-experience', authUserDetails('employee'), getWorkingExperience)
 
 // job posts
 router.get('/get-recruitment-posts', getAllJobRecruitmentPosts);

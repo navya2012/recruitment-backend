@@ -105,6 +105,18 @@ const userProfileImageUpload = async (req, res) => {
     }
 }
 
+//GET ALL PROFILE IMAGE DETAILS
+const getUserProfileImage = async (req, res) => {
+    try {
+        const profileImageRecord = await profileImageModel.find();
+
+        return res.status(200).json(profileImageRecord);
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+};
+
+
 //verify otp
 const verifyOtp = async (req, res) => {
     const { otp } = req.body
@@ -188,5 +200,6 @@ module.exports = {
     verifyOtp,
     generateOtp,
     resendOtp,
-    userProfileImageUpload
+    userProfileImageUpload,
+    getUserProfileImage
 }
