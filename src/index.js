@@ -28,7 +28,7 @@ app.use('/api/employee', employeeRoutes )
 app.use('/api/employer', employerRoutes )
 
 app.get("/", (req,res) => {
-    res.send('hello')
+    res.send('hello world')
 })
 
 app.listen(port, async () => {
