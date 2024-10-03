@@ -40,7 +40,7 @@ const recruitmentSchema = mongoose.Schema({
         required: true
     },
 },
-    { timestamps: true }
+    { timestampss: true }
 )
 
 const jobAppliedSchema = mongoose.Schema({
@@ -85,13 +85,22 @@ const jobAppliedSchema = mongoose.Schema({
     lastName: {
         type: String
     },
+    employeeCurrentCompany:{
+        type:String
+    },
+    employeePosition:{
+        type:String
+    },
+    employeeLocation:{
+        type:String
+    },
     jobAppliedDate: {
         type: Date
 
     }
 },
 
-    { timestamps: true }
+    { timestampss: true }
 )
 
 const jobRecruitmentModel = new mongoose.model("jobRecruitment", recruitmentSchema)

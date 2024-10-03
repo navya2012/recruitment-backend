@@ -43,7 +43,7 @@ const workingExperienceSchema = mongoose.Schema({
         required: true
     }
 },
- { timestamp: true }
+ { timestamps: true }
 )
 
 const workingExperienceModel = new mongoose.model("workingExperience", workingExperienceSchema)

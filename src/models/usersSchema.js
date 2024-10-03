@@ -79,7 +79,7 @@ const userDetailsSchema = mongoose.Schema({
         default:false
     }
 },
-{ timestamp: true }  
+{ timestamps: true }  
 )
 
 const profileImageSchema = mongoose.Schema({
@@ -100,7 +100,7 @@ const profileImageSchema = mongoose.Schema({
         required:true
     }
 },
-{ timestamp: true }
+{ timestamps: true }
 )
 
 

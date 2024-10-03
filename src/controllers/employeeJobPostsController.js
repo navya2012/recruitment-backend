@@ -47,10 +47,9 @@ const updateJobAppliedStatus = async (req, res) => {
             employeeCurrentCompany:employeeDetails.currentCompany,
             employeePosition:employeeDetails.position,
             employeeLocation:employeeDetails.location,
-            employeeDetails,
             jobAppliedDate: new Date()
         });
-console.log(jobApplication)
+
         res.status(200).json({
             message: 'Successfully applied for the job',
             jobApplication

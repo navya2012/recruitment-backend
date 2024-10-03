@@ -23,4 +23,4 @@ router.post('/update-job-applied-status/:id', authUserDetails('employee'), updat
 router.get('/get-applied-job-posts', authUserDetails('employee'), getJobPostsAppliedByEmployee)
 router.get('/get-all-applied-job-posts', getAllJobAppliedPostsByEmployees);
 
-module.exports = router
+module.exports = router 
