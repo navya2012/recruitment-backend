@@ -58,6 +58,9 @@ const getAllJobAppliedPostsPostedByEmployer = async (req, res) => {
             mobileNumber: job.mobileNumber,
             firstName: job.firstName,
             lastName: job.lastName,
+            employeeCurrentCompany:job.employeeCurrentCompany,
+            employeeLocation:job.employeeLocation,
+            employeePosition:job.employeePosition,
             jobAppliedDate: job.jobAppliedDate
 
         }));
