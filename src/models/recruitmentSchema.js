@@ -40,7 +40,7 @@ const recruitmentSchema = mongoose.Schema({
         required: true
     },
 },
-    { timestamp: true }
+    { timestamps: true }
 )
 
 const jobAppliedSchema = mongoose.Schema({
@@ -91,7 +91,7 @@ const jobAppliedSchema = mongoose.Schema({
     }
 },
 
-    { timestamp: true }
+    { timestamps: true }
 )
 
 const jobRecruitmentModel = new mongoose.model("jobRecruitment", recruitmentSchema)
