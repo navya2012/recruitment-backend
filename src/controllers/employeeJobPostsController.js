@@ -38,7 +38,7 @@ const updateJobAppliedStatus = async (req, res) => {
                 { role: req.user.role }
             ]
         });
-        console.log(profileImageData)
+        console.log(profileImageData,'user', employeeDetails)
 
         if (!profileImageData) {
             return res.status(404).json({ error: 'Profile image not found' });
