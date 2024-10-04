@@ -64,6 +64,7 @@ const getAllJobAppliedPostsPostedByEmployer = async (req, res) => {
             employee_profile:job.profileImage,
             employee_jobAppliedDate: job.jobAppliedDate
         }));
+        console.log(jobAppliedPostsList)
 
         res.status(200).json({
             jobAppliedPostsList
