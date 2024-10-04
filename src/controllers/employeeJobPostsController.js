@@ -54,15 +54,15 @@ const updateJobAppliedStatus = async (req, res) => {
             location:jobPost.location,
             hasApplied: true,
             employee_id : employeeDetails._id,
-            profileImage: profileImageData?.profileImage,
-            email : employeeDetails.email,
-            mobileNumber: employeeDetails.mobileNumber,
-            firstName: employeeDetails.firstName,
-            lastName: employeeDetails.lastName,
-            employeeCurrentCompany:employeeDetails.currentCompany,
-            employeePosition:employeeDetails.position,
-            employeeLocation:employeeDetails.location,
-            jobAppliedDate: new Date()
+            employee_profileImage: profileImageData?.profileImage,
+            employee_email : employeeDetails.email,
+            employee_mobileNumber: employeeDetails.mobileNumber,
+            employee_firstName: employeeDetails.firstName,
+            employee_lastName: employeeDetails.lastName,
+            employee_current_company:employeeDetails.currentCompany,
+            employee_position:employeeDetails.position,
+            employee_location:employeeDetails.location,
+            employee_jobAppliedDate: new Date()
         });
 
         res.status(200).json({
@@ -112,9 +112,9 @@ const getJobPostsAppliedByEmployee = async (req, res) => {
             location:job.location,
             hasApplied: true,
             employee_id : job.employee_id,
-            email : job.email,
+            employee_profile:job.profileImage,
+            employee_email : job.email,
             jobAppliedDate: job.jobAppliedDate
-
         }));
 
         res.status(200).json({

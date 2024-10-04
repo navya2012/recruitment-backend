@@ -54,15 +54,15 @@ const getAllJobAppliedPostsPostedByEmployer = async (req, res) => {
             role: job.role,
             hasApplied: true,
             employee_id : job.employee_id,
-            email : job.email,
-            mobileNumber: job.mobileNumber,
-            firstName: job.firstName,
-            lastName: job.lastName,
-            employeeCurrentCompany:job.employeeCurrentCompany,
-            employeeLocation:job.employeeLocation,
-            employeePosition:job.employeePosition,
-            jobAppliedDate: job.jobAppliedDate
-
+            employee_email : job.email,
+            employee_mobileNumber: job.mobileNumber,
+            employee_firstName: job.firstName,
+            employee_lastName: job.lastName,
+            employee_current_company:job.employeeCurrentCompany,
+            employee_location:job.employeeLocation,
+            employee_position:job.employeePosition,
+            employee_profile:job.profileImage,
+            employee_jobAppliedDate: job.jobAppliedDate
         }));
 
         res.status(200).json({
