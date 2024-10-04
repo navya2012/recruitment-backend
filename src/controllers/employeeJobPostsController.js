@@ -1,5 +1,6 @@
 
 const { jobRecruitmentModel, jobAppliedPostsModel } = require("../models/recruitmentSchema")
+const { profileImageModel } = require("../models/usersSchema")
 
 
 //get all recruitment posts - employee
@@ -29,6 +30,15 @@ const updateJobAppliedStatus = async (req, res) => {
         if (existingApplication) {
             return res.status(400).json({ error: 'You have already applied to this job.' });
         }
+
+        const profileImageData = await profileImageModel.findOne({
+            $and: [
+                { user_id: req.user._id },
+                { email: req.user.email },
+                { role: req.user.role }
+            ]
+        });
+        console.log(profileImageData)
         
         const jobApplication = await jobAppliedPostsModel.create({
             jobId: jobPost._id,

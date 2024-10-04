@@ -94,9 +94,11 @@ const jobAppliedSchema = mongoose.Schema({
     employeeLocation:{
         type:String
     },
+    profileImage:{
+        type:String,
+    },
     jobAppliedDate: {
         type: Date
-
     }
 },
 
