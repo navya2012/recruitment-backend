@@ -40,7 +40,7 @@ const recruitmentSchema = mongoose.Schema({
         required: true
     },
 },
-    { timestampss: true }
+    { timestamps: true }
 )
 
 const jobAppliedSchema = mongoose.Schema({
@@ -73,36 +73,36 @@ const jobAppliedSchema = mongoose.Schema({
     employee_id: {
         type: String
     },
-    email: {
+    employee_email: {
         type: String
     },
-    mobileNumber: {
+    employee_mobileNumber: {
         type: String
     },
-    firstName: {
+    employee_firstName: {
         type: String
     },
-    lastName: {
+    employee_lastName: {
         type: String
     },
-    employeeCurrentCompany:{
+    employee_current_company:{
         type:String
     },
-    employeePosition:{
+    employee_position:{
         type:String
     },
-    employeeLocation:{
+    employee_location:{
         type:String
     },
-    profileImage:{
+    employee_profileImage:{
         type:String,
     },
-    jobAppliedDate: {
+    employee_jobAppliedDate: {
         type: Date
     }
 },
 
-    { timestampss: true }
+    { timestamps: true }
 )
 
 const jobRecruitmentModel = new mongoose.model("jobRecruitment", recruitmentSchema)

@@ -38,33 +38,11 @@ const updateJobAppliedStatus = async (req, res) => {
                 { role: req.user.role }
             ]
         });
-        console.log(profileImageData,'user', employeeDetails)
 
         if (!profileImageData) {
             return res.status(404).json({ error: 'Profile image not found' });
         }
-        console.log({
-            jobId: jobPost._id,
-            employer_id: jobPost.employer_id,
-            companyName: jobPost.companyName,
-            role: jobPost.role,
-            technologies: jobPost.technologies,
-            experience: jobPost.experience,
-            location: jobPost.location,
-            hasApplied: true,
-            employee_id: employeeDetails._id,
-            employee_profileImage: profileImageData?.profileImage,
-            employee_email: employeeDetails.email,
-            employee_mobileNumber: employeeDetails.mobileNumber,
-            employee_firstName: employeeDetails.firstName,
-            employee_lastName: employeeDetails.lastName,
-            employee_current_company: employeeDetails.currentCompany,
-            employee_position: employeeDetails.position,
-            employee_location: employeeDetails.location,
-            employee_jobAppliedDate: new Date()
-        });
-        
-        
+              
         const jobApplication = await jobAppliedPostsModel.create({
             jobId: jobPost._id,
             employer_id: jobPost.employer_id,
@@ -85,7 +63,7 @@ const updateJobAppliedStatus = async (req, res) => {
             employee_location:employeeDetails.location,
             employee_jobAppliedDate: new Date()
         });
-console.log(jobApplication)
+
         res.status(200).json({
             message: 'Successfully applied for the job',
             jobApplication
@@ -133,11 +111,11 @@ const getJobPostsAppliedByEmployee = async (req, res) => {
             location:job.location,
             hasApplied: true,
             employee_id : job.employee_id,
-            employee_profile:job.profileImage,
-            employee_email : job.email,
-            jobAppliedDate: job.jobAppliedDate
+            employee_profileImage:job.employee_profileImage,
+            employee_email : job.employee_email,
+            employee_jobAppliedDate: job.employee_jobAppliedDate
         }));
-console.log(jobAppliedPostsList)
+
         res.status(200).json({
             jobAppliedPostsList
         });
