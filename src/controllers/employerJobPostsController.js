@@ -44,7 +44,7 @@ const getAllJobAppliedPostsPostedByEmployer = async (req, res) => {
                 employer_id :employer_id
         })  
         if (appliedJobPosts.length === 0) {
-            return res.status(200).json({ message: "No applied job posts found" });
+            return res.status(200).json({ jobAppliedPostsList: "No job applications found." });
         }
 
         const jobAppliedPostsList = appliedJobPosts.map(job => ({
@@ -65,10 +65,7 @@ const getAllJobAppliedPostsPostedByEmployer = async (req, res) => {
             employee_jobAppliedDate: job.employee_jobAppliedDate
         }));
 
-        res.status(200).json({
-            jobAppliedPostsList
-        });
-
+        res.status(200).json({ jobAppliedPostsList });
     }
     catch (err) {
         res.status(400).json({ error: err.message })
@@ -139,9 +136,8 @@ const updateJobRecruitmentPosts = async (req, res) => {
         if (!updatedRecruitmentPosts) {
             return res.status(404).json({ error: "Job post not found" });
         }
-
-        res.status(200).json({ message: "Updated Job Post Successfully", updatedRecruitmentPosts });
-
+        
+        res.status(200).json({ message: "Updated Job Post Successfully" });
     }
     catch (err) {
         res.status(400).json({ error: err.message })
