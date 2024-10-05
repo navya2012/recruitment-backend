@@ -97,10 +97,6 @@ const getJobPostsAppliedByEmployee = async (req, res) => {
                 employee_id :employee_id
         })  
 
-        if (appliedJobPosts.length === 0) {
-            return res.status(200).json({ jobAppliedPostsList: "No job applications found." });
-        }
-
         const jobAppliedPostsList = appliedJobPosts.map(job => ({
             jobId: job.jobId,
             employer_id: job.employer_id,
