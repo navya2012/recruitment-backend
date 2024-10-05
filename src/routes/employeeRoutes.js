@@ -18,7 +18,7 @@ router.post('/working-experience', authUserDetails('employee'), workingExperienc
 router.get('/get-working-experience', authUserDetails('employee'), getWorkingExperience)
 
 // job posts
-router.get('/get-recruitment-posts', getAllJobRecruitmentPosts);
+router.get('/get-all-recruitment-posts', getAllJobRecruitmentPosts);
 router.post('/update-job-applied-status/:id', authUserDetails('employee'), updateJobAppliedStatus)
 router.get('/get-applied-job-posts', authUserDetails('employee'), getJobPostsAppliedByEmployee)
 router.get('/get-all-applied-job-posts', getAllJobAppliedPostsByEmployees);
