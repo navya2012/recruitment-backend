@@ -28,7 +28,7 @@ const updateJobAppliedStatus = async (req, res) => {
 
         const existingApplication = await jobAppliedPostsModel.findOne({ jobId, employee_id: req.user._id });
         if (existingApplication) {
-            return res.status(200).json({ message: 'You have already applied to this job.' });
+            return res.status(200).json({ jobApplication: 'You have already applied to this job.' });
         }
 
         const profileImageData = await profileImageModel.findOne({

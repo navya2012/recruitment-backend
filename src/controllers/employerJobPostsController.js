@@ -109,7 +109,7 @@ const getAllJobPostsPostedByEmployer = async (req, res) => {
         const getJobPostsList = await jobRecruitmentModel.find({ employer_id })
 
         if (getJobPostsList.length === 0) {
-            return res.status(200).json({ getJobPostsList: "No job posts found for this employer" });
+            return res.status(200).json({ getJobPostsList: "No job posts found" });
           }
 
         res.status(200).json({ getJobPostsList })
