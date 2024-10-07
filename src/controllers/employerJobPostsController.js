@@ -39,12 +39,12 @@ const getAllJobAppliedPostsPostedByEmployer = async (req, res) => {
     const employer_id = req.user._id
     try {
 
-        const appliedJobPosts = await jobAppliedPostsModel.find({
+        const appliedJobPostsList = await jobAppliedPostsModel.find({
             hasApplied: true,
                 employer_id :employer_id
         })  
 
-        const jobAppliedPostsList = appliedJobPosts.map(job => ({
+        const jobAppliedPostsList = appliedJobPostsList.map(job => ({
             jobId: job.jobId,
             employer_id: job.employer_id,
             companyName: job.companyName,

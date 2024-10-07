@@ -92,12 +92,12 @@ const getJobPostsAppliedByEmployee = async (req, res) => {
 
     try {
 
-        const appliedJobPosts = await jobAppliedPostsModel.find({
+        const appliedJobsList = await jobAppliedPostsModel.find({
             hasApplied: true,
                 employee_id :employee_id
         })  
 
-        const jobAppliedPostsList = appliedJobPosts.map(job => ({
+        const jobsAppliedList = appliedJobsList.map(job => ({
             jobId: job.jobId,
             employer_id: job.employer_id,
             companyName: job.companyName,
@@ -112,7 +112,7 @@ const getJobPostsAppliedByEmployee = async (req, res) => {
             employee_jobAppliedDate: job.employee_jobAppliedDate
         }));
 
-        res.status(200).json({ jobAppliedPostsList }); 
+        res.status(200).json({ jobsAppliedList }); 
     }
     catch (err) {
         res.status(400).json({ error: err.message })

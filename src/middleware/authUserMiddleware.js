@@ -40,7 +40,7 @@ const authUserDetails = (expectedRole) => {
             next()
         }
         catch (err) {
-            res.status(401).json({ error: 'Request is not authorized' })
+            res.status(401).json({ error: 'Request is not authorized ! Please Check the token' })
         }
     }
 }
@@ -77,7 +77,7 @@ const authUser = async (req, res, next) => {
         next()
     }
     catch (err) {
-        res.status(401).json({ error: 'Request is not authorized' })
+        res.status(401).json({ error: 'Request is not authorized ! Please Check the token' })
     }
 }
 
