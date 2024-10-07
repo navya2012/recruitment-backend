@@ -20,7 +20,7 @@ router.get('/get-working-experience', authUserDetails('employee'), getWorkingExp
 // job posts
 router.get('/get-all-recruitment-posts', getAllJobRecruitmentPosts);
 router.post('/update-job-applied-status/:id', authUserDetails('employee'), updateJobAppliedStatus)
-router.get('/get-applied-job-posts', authUserDetails('employee'), getJobPostsAppliedByEmployee)
+router.get('/get-applied-jobs', authUserDetails('employee'), getJobPostsAppliedByEmployee)
 router.get('/get-all-applied-job-posts', getAllJobAppliedPostsByEmployees);
 
 module.exports = router 
