@@ -12,11 +12,7 @@ const port = process.env.PORT || 5000
 //middleware    
 app.use(bodyParser.json());
 app.use(express.json());
-app.use(cors({
-    origin: 'http://localhost:3000', // Allow requests from your frontend
-    methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'], // Specify allowed methods
-    credentials: true, // Allow credentials if necessary
-  }));
+app.use(cors())
 
 //db connection
 require('./db/connection')

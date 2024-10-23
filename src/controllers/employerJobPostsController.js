@@ -130,7 +130,7 @@ const updateJobRecruitmentPosts = async (req, res) => {
             return res.status(404).json({ error: "Job post not found" });
         }
 
-        res.status(200).json({ message: "Updated Job Post Successfully" });
+        res.status(200).json({ message: "Updated Job Post Successfully",updatedRecruitmentPosts });
     }
     catch (err) {
         res.status(400).json({ error: err.message })
