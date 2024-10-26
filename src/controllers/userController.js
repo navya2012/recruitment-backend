@@ -142,22 +142,31 @@ const userLoginDetails = async (req, res) => {
 };
 
 //get all login  users 
-const getAllUserProfiles = async (req, res) => {
+const getAllUsersByRole = async (req, res) => {
     try {
-        const allUserProfiles = await userDetailsModel.find();
+        const { role } = req.query; 
+        let query = {};
 
-        return res.status(200).json(allUserProfiles);
+        if (role) {
+            query.role = role; 
+        }
+
+        const users = await userDetailsModel.find(query);
+        const count = users.length;
+
+        return res.status(200).json({ count, users });
     } catch (error) {
         return res.status(400).json({ error: error.message });
     }
 };
 
 
+
 module.exports = {
     userSignupDetails,
     userLoginDetails,
     signupValidation,
-    getAllUserProfiles,
+    getAllUsersByRole,
     generateOtp,
     userProfileImageUpload,
     getUserProfileImage

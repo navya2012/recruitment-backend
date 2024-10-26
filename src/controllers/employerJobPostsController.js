@@ -116,7 +116,7 @@ const updateJobRecruitmentPosts = async (req, res) => {
     try {
 
         if (!jobId) {
-            return res.status(404).json({ error: 'Job Post ID is not provided' });
+            return res.status(404).json({ error: 'Job Post is not provided' });
         }
 
         const updateRecruitmentPosts = { companyName, role, technologies, experience, location, graduation, languages, noticePeriod }
@@ -125,10 +125,6 @@ const updateJobRecruitmentPosts = async (req, res) => {
             { $set: updateRecruitmentPosts },
             { new: true }
         );
-
-        if (!updatedRecruitmentPosts) {
-            return res.status(404).json({ error: "Job post not found" });
-        }
 
         res.status(200).json({ message: "Updated Job Post Successfully",updatedRecruitmentPosts });
     }

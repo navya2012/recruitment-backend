@@ -41,6 +41,10 @@ const workingExperienceSchema = mongoose.Schema({
     employee_id:{
         type: String,
         required: true
+    },
+    employee_email:{
+        type: String,
+        required: true
     }
 },
  { timestamps: true }

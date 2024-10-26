@@ -4,18 +4,24 @@ const express = require("express")
 const router = express.Router()
 
 const { signupValidation } = require("../controllers/userController")
-const { workingExperienceController, getWorkingExperience } = require("../controllers/workingExperienceController")
+const { getWorkingExperience, createWorkingExperience, updateWorkingExperience, getWorkingExperienceById } = require("../controllers/workingExperienceController")
 const {  updateJobAppliedStatus,  getAllJobRecruitmentPosts, getAllJobAppliedPostsByEmployees, getJobPostsAppliedByEmployee } = require("../controllers/employeeJobPostsController")
 const updateUserDetails = require("../controllers/updateUserController")
 const { authUserDetails } = require("../middleware/authUserMiddleware")
+const { getEmployeeFullDetails } = require("../controllers/userDetailsController")
+
+//full details
+router.get('/employee-full-details', authUserDetails('employee'), getEmployeeFullDetails)
 
 
 //update details
 router.patch('/update-details', authUserDetails('employee'), signupValidation, updateUserDetails)
 
 //working experience
-router.post('/working-experience', authUserDetails('employee'), workingExperienceController);
-router.get('/get-working-experience', authUserDetails('employee'), getWorkingExperience)
+router.post('/add-working-experience', authUserDetails('employee'), createWorkingExperience);
+router.patch('/update-working-experience', authUserDetails('employee'), updateWorkingExperience);
+router.get('/get-working-experience', authUserDetails('employee') , getWorkingExperienceById)
+router.get('/get-all-users-working-experience',  getWorkingExperience)
 
 // job posts
 router.get('/get-all-recruitment-posts', getAllJobRecruitmentPosts);

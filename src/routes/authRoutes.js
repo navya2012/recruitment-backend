@@ -3,7 +3,7 @@ const express = require("express")
 
 const router = express.Router()
 
-const { signupValidation, userSignupDetails, userLoginDetails, userProfileImageUpload, getUserProfileImage, getAllUserProfiles } = require("../controllers/userController")
+const { signupValidation, userSignupDetails, userLoginDetails, userProfileImageUpload, getUserProfileImage, getAllUsersByRole, } = require("../controllers/userController")
 const { authUser } = require("../middleware/authUserMiddleware")
 const { forgotPassword, changePasswordValidation, changePassword, updatePassword } = require("../controllers/passwordController")
 const { uploadFiles } = require("../utilities/multer")
@@ -13,7 +13,7 @@ const { verifyOtp, resendOtp } = require("../controllers/OTPController")
 //routes
 router.post('/signup', signupValidation, userSignupDetails)
 router.post('/login', userLoginDetails)
-router.get('/all-users', getAllUserProfiles)
+router.get('/all-users?', getAllUsersByRole)
 
 router.post('/verify-otp', authUser, verifyOtp)
 router.post('/resend-otp', authUser, resendOtp)
