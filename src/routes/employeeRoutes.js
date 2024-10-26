@@ -11,7 +11,7 @@ const { authUserDetails } = require("../middleware/authUserMiddleware")
 const { getEmployeeFullDetails } = require("../controllers/userDetailsController")
 
 //full details
-router.get('/employee-full-details/:id', authUserDetails('employee'), getEmployeeFullDetails)
+router.get('/employee-full-details/:id', getEmployeeFullDetails)
 
 
 //update details
