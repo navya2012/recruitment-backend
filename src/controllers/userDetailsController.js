@@ -1,31 +1,37 @@
 const { jobAppliedPostsModel } = require("../models/recruitmentSchema");
-const { userDetailsModel } = require("../models/usersSchema");
+const { userDetailsModel, profileImageModel } = require("../models/usersSchema");
 const { workingExperienceModel } = require("../models/workingExperienceSchema");
 
 
 const getEmployeeFullDetails = async (req, res) => {
-    const { _id, email } = req.user
-console.log(req.user)
+    const { id } = req.params;
+
     try {
-        // Fetch user details
-        const userDetails = await userDetailsModel.findOne({_id, email});
+        //  user details
+        const userDetails = await userDetailsModel.findOne({_id: id});
         if (!userDetails) {
             return res.status(404).json({ error: "User details not found." });
         }
 
-        // Fetch working experience for this user
-        const workingExperience = await workingExperienceModel.findOne({ employee_id: _id, employee_email:email });
+        //profile image
+        const profileImage = await profileImageModel.findOne({user_id:id});
+        if (!profileImage) {
+            return res.status(404).json({ error: "profile Image not found." });
+        }
+
+        //  working experience 
+        const workingExperience = await workingExperienceModel.findOne({ employee_id:id});
         if (!workingExperience) {
             return res.status(404).json({ error: "Working experience not found." });
         }
 
-        // Fetch count of applied jobs for this user
-        const appliedJobs = await jobAppliedPostsModel.find({ employee_id: _id, employee_email:email  });
+        //  applied jobs
+        const appliedJobs = await jobAppliedPostsModel.find({ employee_id:id});
         const appliedJobsCount = appliedJobs.length
 
-        // Combine all the details into a single response object
         const fullDetails = {
             userDetails,
+            profileImage,
             workingExperience,
             appliedJobs, appliedJobsCount
         };

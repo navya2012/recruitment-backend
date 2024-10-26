@@ -45,17 +45,15 @@ const getAllJobAppliedPostsPostedByEmployer = async (req, res) => {
         })  
 
         const jobAppliedPostsList = appliedJobPostsList.map(job => ({
+            hasApplied: true,
             jobId: job.jobId,
             employer_id: job.employer_id,
             companyName: job.companyName,
             role: job.role,
-            hasApplied: true,
             employee_id : job.employee_id,
             employee_email : job.employee_email,
-            employee_mobileNumber: job.employee_mobileNumber,
             employee_firstName: job.employee_firstName,
             employee_lastName: job.employee_lastName,
-            employee_current_company:job.employee_current_company,
             employee_location:job.employee_location,
             employee_position:job.employee_position,
             employee_profileImage:job.employee_profileImage,

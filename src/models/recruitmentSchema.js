@@ -44,6 +44,11 @@ const recruitmentSchema = mongoose.Schema({
 )
 
 const jobAppliedSchema = mongoose.Schema({
+    hasApplied: {
+        type: Boolean,
+        required: true,
+        default: false 
+    },
     jobId: {
         type: String
     },
@@ -65,10 +70,14 @@ const jobAppliedSchema = mongoose.Schema({
     location:{
         type:String
     },
-    hasApplied: {
-        type: Boolean,
-        required: true,
-        default: false 
+    languages:{
+        type:[String]
+    },
+    graduation:{
+        type:String
+    },
+    noticePeriod:{
+        type:String
     },
     employee_id: {
         type: String

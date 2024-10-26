@@ -44,6 +44,7 @@ const updateJobAppliedStatus = async (req, res) => {
         }
               
         const jobApplication = await jobAppliedPostsModel.create({
+            hasApplied: true,
             jobId: jobPost._id,
             employer_id: jobPost.employer_id,
             companyName:jobPost.companyName,
@@ -51,7 +52,9 @@ const updateJobAppliedStatus = async (req, res) => {
             technologies:jobPost.technologies,
             experience: jobPost.experience,
             location:jobPost.location,
-            hasApplied: true,
+            graduation:jobPost.graduation,
+            languages:jobPost.languages,
+            noticePeriod:jobPost.noticePeriod,
             employee_id : employeeDetails._id,
             employee_profileImage: profileImageData?.profileImage,
             employee_email : employeeDetails.email,
