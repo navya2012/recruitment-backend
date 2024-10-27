@@ -42,7 +42,7 @@ const createWorkingExperience = async (req, res) => {
         const addWorkingExperience = new workingExperienceModel(experienceFields);
 
         await addWorkingExperience.save();
-        res.status(201).json({ message: "Working experience created successfully", addWorkingExperience });
+        res.status(200).json({ message: "Working experience created successfully", addWorkingExperience });
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
@@ -51,7 +51,7 @@ const createWorkingExperience = async (req, res) => {
 // Update existing working experience
 const updateWorkingExperience = async (req, res) => {
     const { technologies, experience, location, graduation, languages, noticePeriod } = req.body;
-    const employee_id = req.user._id;  // Get employee ID from authenticated user
+    const employee_id = req.user._id; 
     const employee_email = req.user.email;
 
     try {
