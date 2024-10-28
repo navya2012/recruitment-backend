@@ -15,7 +15,7 @@ const getWorkingExperience = async (req,res) => {
 const getWorkingExperienceById = async (req,res) => {
     const employee_id = req.user._id;
     try{
-        const experienceData = await workingExperienceModel.find({employee_id}); 
+        const experienceData = await workingExperienceModel.findOne({employee_id}); 
         res.status(200).json({ experienceData });
     }
     catch(err){
