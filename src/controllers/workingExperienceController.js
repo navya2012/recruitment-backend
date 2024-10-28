@@ -42,7 +42,7 @@ const createWorkingExperience = async (req, res) => {
         const addWorkingExperience = new workingExperienceModel(experienceFields);
 
         await addWorkingExperience.save();
-        res.status(200).json({ message: "Working experience created successfully", addWorkingExperience });
+        res.status(200).json({ message: "Working experience created successfully", addWorkingExperience : addWorkingExperience});
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
@@ -71,7 +71,7 @@ const updateWorkingExperience = async (req, res) => {
             { new: true}
         );
 
-        res.status(200).json({ message: "Working experience updated successfully", updatedWorkingExperience });
+        res.status(200).json({ message: "Working experience updated successfully", updatedWorkingExperience : updatedWorkingExperience });
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
