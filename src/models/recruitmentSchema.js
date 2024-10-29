@@ -52,6 +52,11 @@ const jobAppliedSchema = mongoose.Schema({
     jobId: {
         type: String
     },
+    jobStatus: {
+        type: String,
+        enum: [ 'pending','Approved', 'Rejected','Deleted'],
+        default: 'pending'
+      },
     employer_id: {
         type: String
     },
