@@ -31,7 +31,6 @@ const createWorkingExperience = async (req, res) => {
 
     try {
         let workingExperienceData = await workingExperienceModel.findOne({ employee_id ,employee_email});
-        console.log(workingExperienceData)
 
         if (workingExperienceData) {
             return res.status(404).json({ error: "Working experience is already added" });
@@ -56,7 +55,6 @@ const updateWorkingExperience = async (req, res) => {
 
     try {
         let workingExperienceData = await workingExperienceModel.findOne({ employee_id ,employee_email});
-        console.log(workingExperienceData)
 
         if (!workingExperienceData) {
             return res.status(404).json({ error: "Working experience not found. Please create first." });
