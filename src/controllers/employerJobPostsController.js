@@ -106,14 +106,22 @@ const deleteJobPosts = async (req, res) => {
 
     try {
         // Find and delete the job post that matches both employer_id and jobId
-        const result = await jobRecruitmentModel.findOneAndDelete({
+        const deletePostedJobPost = await jobRecruitmentModel.findOneAndDelete({
             _id: jobId,
             employer_id: employer_id
         });
 
-        // Check if a document was found and deleted
-        if (!result) {
-            return res.status(404).json({ message: "Job post not found" });
+                if (!deletePostedJobPost) {
+                    return res.status(404).json({ message: "Job post not found" });
+                }
+
+        const deleteAppliedJobPost = await jobAppliedPostsModel.deleteMany({
+            _id: jobId,
+            employer_id: employer_id
+        });
+
+        if (!deleteAppliedJobPost) {
+            return res.status(404).json({ message: "No one applied for this job" });
         }
 
         res.status(200).json({ message: "Job post successfully deleted." });
@@ -132,6 +140,7 @@ const getAllJobAppliedPostsPostedByEmployer = async (req, res) => {
             hasApplied: true,
                 employer_id :employer_id
         })  
+        console.log(appliedJobPostsList)
 
         const jobAppliedPostsList = appliedJobPostsList.map(job => ({
             hasApplied: true,
