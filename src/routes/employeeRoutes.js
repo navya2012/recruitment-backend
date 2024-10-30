@@ -8,7 +8,7 @@ const { getWorkingExperience, createWorkingExperience, updateWorkingExperience, 
 const {  updateJobAppliedStatus,  getAllJobRecruitmentPosts, getAllJobAppliedPostsByEmployees, getJobPostsAppliedByEmployee } = require("../controllers/employeeJobPostsController")
 const updateUserDetails = require("../controllers/updateUserController")
 const { authUserDetails } = require("../middleware/authUserMiddleware")
-const { getEmployeeFullDetails } = require("../controllers/userDetailsController")
+const { getEmployeeFullDetails } = require("../controllers/userFullDetailsController")
 
 //full details
 router.get('/employee-full-details/:id', getEmployeeFullDetails)

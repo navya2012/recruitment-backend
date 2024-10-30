@@ -32,11 +32,12 @@ const getEmployeeFullDetails = async (req, res) => {
             fullDetails.workingExperience = "Working experience not found.";
         }
 
-        // Fetch applied jobs
+        // Fetch applied jobs  
+        const appliedJobs = await jobAppliedPostsModel.find({ employee_id: id });
+
         const appliedJobsCount = appliedJobs.length;
         fullDetails.appliedJobsCount = appliedJobsCount;
-        
-        const appliedJobs = await jobAppliedPostsModel.find({ employee_id: id });
+
         if (appliedJobs) {
             fullDetails.appliedJobs = appliedJobs; 
         } else {
@@ -72,10 +73,11 @@ const getEmployerFullDetails = async (req, res) => {
         }
 
         // Fetch posted job posts
+        const postedJobPosts = await jobRecruitmentModel.find({ employer_id: id });
+
         const postedJobPostsCount = postedJobPosts.length;
         employerDetails.postedJobPostsCount = postedJobPostsCount;
 
-        const postedJobPosts = await jobRecruitmentModel.find({ employer_id: id });
         if (postedJobPosts) {
             employerDetails.postedJobPosts = postedJobPosts; 
         } else {
@@ -83,10 +85,11 @@ const getEmployerFullDetails = async (req, res) => {
         }
 
         // Fetch applied jobs
+        const appliedJobs = await jobAppliedPostsModel.find({ employer_id: id });
+
         const appliedJobsCount = appliedJobs.length;
         employerDetails.appliedJobsCount = appliedJobsCount;
-
-        const appliedJobs = await jobAppliedPostsModel.find({ employer_id: id });
+        
         if (appliedJobs) {
             employerDetails.appliedJobs = appliedJobs; 
         } else {

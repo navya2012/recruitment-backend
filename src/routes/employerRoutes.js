@@ -7,7 +7,7 @@ const { signupValidation } = require("../controllers/userController")
 const updateUserDetails = require("../controllers/updateUserController")
 const { authUserDetails } = require("../middleware/authUserMiddleware")
 const { createJobRecruitmentPosts, updateJobRecruitmentPosts, getAllJobPostsPostedByEmployer, deleteJobPosts, getAllJobAppliedPostsPostedByEmployer, jobPostsValidation, approveJobApplication, rejectJobApplication, deleteJobApplication } = require("../controllers/employerJobPostsController")
-const { getEmployerFullDetails } = require("../controllers/userDetailsController")
+const { getEmployerFullDetails } = require("../controllers/userFullDetailsController")
 
 //full details
 router.get('/employer-full-details/:id', getEmployerFullDetails)
