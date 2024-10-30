@@ -13,7 +13,6 @@ const { getEmployeeFullDetails } = require("../controllers/userDetailsController
 //full details
 router.get('/employee-full-details/:id', getEmployeeFullDetails)
 
-
 //update details
 router.patch('/update-details', authUserDetails('employee'), signupValidation, updateUserDetails)
 

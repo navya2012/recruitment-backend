@@ -45,16 +45,9 @@ const updateJobAppliedStatus = async (req, res) => {
               
         const jobApplication = await jobAppliedPostsModel.create({
             hasApplied: true,
+            ...jobPost.toObject(),
             jobId: jobPost._id,
             employer_id: jobPost.employer_id,
-            companyName:jobPost.companyName,
-            role:jobPost.role,
-            technologies:jobPost.technologies,
-            experience: jobPost.experience,
-            location:jobPost.location,
-            graduation:jobPost.graduation,
-            languages:jobPost.languages,
-            noticePeriod:jobPost.noticePeriod,
             employee_id : employeeDetails._id,
             employee_profileImage: profileImageData?.profileImage,
             employee_email : employeeDetails.email,
@@ -114,8 +107,9 @@ const getJobPostsAppliedByEmployee = async (req, res) => {
             employee_email : job.employee_email,
             employee_jobAppliedDate: job.employee_jobAppliedDate
         }));
+        const appliedJobPostsCount = jobsAppliedList.length
 
-        res.status(200).json({ jobsAppliedList }); 
+        res.status(200).json({appliedJobPostsCount, jobsAppliedList }); 
     }
     catch (err) {
         res.status(400).json({ error: err.message })

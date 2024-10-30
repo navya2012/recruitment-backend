@@ -34,39 +34,6 @@ const jobPostsValidation = [
     check('noticePeriod').optional().trim().customSanitizer(value => capitalizeFirstLetter(value)),
 ]
 
-//get job applied status by employer
-const getAllJobAppliedPostsPostedByEmployer = async (req, res) => {
-    const employer_id = req.user._id
-    try {
-
-        const appliedJobPostsList = await jobAppliedPostsModel.find({
-            hasApplied: true,
-                employer_id :employer_id
-        })  
-
-        const jobAppliedPostsList = appliedJobPostsList.map(job => ({
-            hasApplied: true,
-            jobId: job.jobId,
-            employer_id: job.employer_id,
-            companyName: job.companyName,
-            role: job.role,
-            employee_id : job.employee_id,
-            employee_email : job.employee_email,
-            employee_firstName: job.employee_firstName,
-            employee_lastName: job.employee_lastName,
-            employee_location:job.employee_location,
-            employee_position:job.employee_position,
-            employee_profileImage:job.employee_profileImage,
-            employee_jobAppliedDate: job.employee_jobAppliedDate
-        }));
-
-        res.status(200).json({ jobAppliedPostsList });
-    }
-    catch (err) {
-        res.status(400).json({ error: err.message })
-    }
-}
-
 //post recruitment posts
 const createJobRecruitmentPosts = async (req, res) => {
     const { companyName, role, technologies, experience, location, graduation, languages, noticePeriod } = req.body
@@ -99,8 +66,9 @@ const getAllJobPostsPostedByEmployer = async (req, res) => {
     try {
 
         const getJobPostsList = await jobRecruitmentModel.find({ employer_id })
+        const PostedJobPostsCount = getJobPostsList.length
 
-        res.status(200).json({ getJobPostsList })
+        res.status(200).json({PostedJobPostsCount, getJobPostsList })
     }
     catch (err) {
         res.status(400).json({ error: err.message })
@@ -155,6 +123,104 @@ const deleteJobPosts = async (req, res) => {
     }
 }
 
+//get job applied status by employer
+const getAllJobAppliedPostsPostedByEmployer = async (req, res) => {
+    const employer_id = req.user._id
+    try {
+
+        const appliedJobPostsList = await jobAppliedPostsModel.find({
+            hasApplied: true,
+                employer_id :employer_id
+        })  
+
+        const jobAppliedPostsList = appliedJobPostsList.map(job => ({
+            hasApplied: true,
+            jobId: job.jobId,
+            employer_id: job.employer_id,
+            companyName: job.companyName,
+            role: job.role,
+            employee_id : job.employee_id,
+            employee_email : job.employee_email,
+            employee_firstName: job.employee_firstName,
+            employee_lastName: job.employee_lastName,
+            employee_location:job.employee_location,
+            employee_position:job.employee_position,
+            employee_profileImage:job.employee_profileImage,
+            employee_jobAppliedDate: job.employee_jobAppliedDate
+        }));
+        const appliedJobPostsCount = jobAppliedPostsList.length
+
+        res.status(200).json({ appliedJobPostsCount, jobAppliedPostsList });
+    }
+    catch (err) {
+        res.status(400).json({ error: err.message })
+    }
+}
+
+const approveJobApplication = async (req, res) => {
+    const { employeeId, jobId } = req.params;
+    const employerId = req.user._id;
+
+    try {
+        const jobApplication = await jobAppliedPostsModel.findOneAndUpdate(
+            { jobId:jobId, employee_id: employeeId, employer_id: employerId },
+            { jobStatus: 'Approved' },
+            { new: true }
+        );
+
+        if (!jobApplication) {
+            return res.status(404).json({ error: 'Applied Job Post not found' });
+        }
+
+        res.status(200).json({ message: 'Application approved', jobApplication });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+const rejectJobApplication = async (req, res) => {
+    const { jobId, employeeId } = req.params;
+    const employerId = req.user._id;
+
+    try {
+        const jobApplication = await jobAppliedPostsModel.findOneAndUpdate(
+            { jobId:jobId, employee_id: employeeId, employer_id: employerId },
+            { jobStatus: 'Rejected' },
+            { new: true }
+        );
+
+        if (!jobApplication) {
+            return res.status(404).json({ error: 'Applied Job Post not found' });
+        }
+
+        res.status(200).json({ message: 'Application rejected', jobApplication });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+const deleteJobApplication = async (req, res) => {
+    const { jobId, employeeId } = req.params;
+    const employerId = req.user._id;
+
+    try {
+        const jobApplication = await jobAppliedPostsModel.findOneAndDelete({
+            jobId:jobId,
+            employee_id: employeeId,
+            employer_id: employerId
+        });
+
+        if (!jobApplication) {
+            return res.status(404).json({ error: 'Applied Job Post not found' });
+        }
+
+        res.status(200).json({ message: 'Application deleted' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+
 
 
 module.exports = {
@@ -164,4 +230,7 @@ module.exports = {
     getAllJobPostsPostedByEmployer,
     deleteJobPosts,
     getAllJobAppliedPostsPostedByEmployer,
+    approveJobApplication,
+    rejectJobApplication,
+    deleteJobApplication
 }
