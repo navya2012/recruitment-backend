@@ -9,28 +9,28 @@ const jobPostsValidation = [
     check('companyName').optional().trim().customSanitizer(value => value.toUpperCase()),
     check('role').optional().trim().customSanitizer(value => capitalizeFirstLetter(value)),
     check('technologies').optional()
-    .customSanitizer(value => {
-        if (Array.isArray(value)) {
-            return value.map(tech => capitalizeFirstLetter(tech));
-        }
-        if (typeof value === 'string') {
-            return [capitalizeFirstLetter(value)]; 
-        }
-        return [];
-    }),
+        .customSanitizer(value => {
+            if (Array.isArray(value)) {
+                return value.map(tech => capitalizeFirstLetter(tech));
+            }
+            if (typeof value === 'string') {
+                return [capitalizeFirstLetter(value)];
+            }
+            return [];
+        }),
     check('experience').optional().trim().customSanitizer(value => capitalizeFirstLetter(value)),
     check('location').optional().trim().customSanitizer(value => capitalizeFirstLetter(value)),
     check('graduation').optional().trim().customSanitizer(value => capitalizeFirstLetter(value)),
     check('languages').optional()
-    .customSanitizer(value => {
-        if (Array.isArray(value)) {
-            return value.map(lang => capitalizeFirstLetter(lang));
-        }
-        if (typeof value === 'string') {
-            return [capitalizeFirstLetter(value)]; 
-        }
-        return []; 
-    }),
+        .customSanitizer(value => {
+            if (Array.isArray(value)) {
+                return value.map(lang => capitalizeFirstLetter(lang));
+            }
+            if (typeof value === 'string') {
+                return [capitalizeFirstLetter(value)];
+            }
+            return [];
+        }),
     check('noticePeriod').optional().trim().customSanitizer(value => capitalizeFirstLetter(value)),
 ]
 
@@ -40,8 +40,8 @@ const createJobRecruitmentPosts = async (req, res) => {
     const employer_id = req.user._id
 
     try {
-          // Validation check
-          const error = validationResult(req).formatWith(({ msg }) => {
+        // Validation check
+        const error = validationResult(req).formatWith(({ msg }) => {
             return { msg };
         });
         if (!error.isEmpty()) {
@@ -68,7 +68,7 @@ const getAllJobPostsPostedByEmployer = async (req, res) => {
         const getJobPostsList = await jobRecruitmentModel.find({ employer_id })
         const PostedJobPostsCount = getJobPostsList.length
 
-        res.status(200).json({PostedJobPostsCount, getJobPostsList })
+        res.status(200).json({ PostedJobPostsCount, getJobPostsList })
     }
     catch (err) {
         res.status(400).json({ error: err.message })
@@ -92,7 +92,7 @@ const updateJobRecruitmentPosts = async (req, res) => {
             { new: true }
         );
 
-        res.status(200).json({ message: "Updated Job Post Successfully",updatedRecruitmentPosts });
+        res.status(200).json({ message: "Updated Job Post Successfully", updatedRecruitmentPosts });
     }
     catch (err) {
         res.status(400).json({ error: err.message })
@@ -111,9 +111,9 @@ const deleteJobPosts = async (req, res) => {
             employer_id: employer_id
         });
 
-                if (!deletePostedJobPost) {
-                    return res.status(404).json({ message: "Job post not found" });
-                }
+        if (!deletePostedJobPost) {
+            return res.status(404).json({ message: "Job post not found" });
+        }
 
         const deleteAppliedJobPost = await jobAppliedPostsModel.deleteMany({
             _id: jobId,
@@ -138,24 +138,24 @@ const getAllJobAppliedPostsPostedByEmployer = async (req, res) => {
 
         const appliedJobPostsList = await jobAppliedPostsModel.find({
             hasApplied: true,
-                employer_id :employer_id
-        })  
+            employer_id: employer_id
+        })
         console.log(appliedJobPostsList)
 
         const jobAppliedPostsList = appliedJobPostsList.map(job => ({
             hasApplied: true,
-            jobStatus:job.jobStatus,
+            jobStatus: job.jobStatus,
             jobId: job.jobId,
             employer_id: job.employer_id,
             companyName: job.companyName,
             role: job.role,
-            employee_id : job.employee_id,
-            employee_email : job.employee_email,
+            employee_id: job.employee_id,
+            employee_email: job.employee_email,
             employee_firstName: job.employee_firstName,
             employee_lastName: job.employee_lastName,
-            employee_location:job.employee_location,
-            employee_position:job.employee_position,
-            employee_profileImage:job.employee_profileImage,
+            employee_location: job.employee_location,
+            employee_position: job.employee_position,
+            employee_profileImage: job.employee_profileImage,
             employee_jobAppliedDate: job.employee_jobAppliedDate
         }));
         const appliedJobPostsCount = jobAppliedPostsList.length
@@ -173,7 +173,7 @@ const approveJobApplication = async (req, res) => {
 
     try {
         const jobApplication = await jobAppliedPostsModel.findOneAndUpdate(
-            { jobId:jobId, employee_id: employeeId, employer_id: employerId },
+            { jobId: jobId, employee_id: employeeId, employer_id: employerId },
             { jobStatus: 'Approved' },
             { new: true }
         );
@@ -194,7 +194,7 @@ const rejectJobApplication = async (req, res) => {
 
     try {
         const jobApplication = await jobAppliedPostsModel.findOneAndUpdate(
-            { jobId:jobId, employee_id: employeeId, employer_id: employerId },
+            { jobId: jobId, employee_id: employeeId, employer_id: employerId },
             { jobStatus: 'Rejected' },
             { new: true }
         );
@@ -215,7 +215,7 @@ const deleteJobApplication = async (req, res) => {
 
     try {
         const jobApplication = await jobAppliedPostsModel.findOneAndDelete({
-            jobId:jobId,
+            jobId: jobId,
             employee_id: employeeId,
             employer_id: employerId
         });
@@ -229,7 +229,6 @@ const deleteJobApplication = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 };
-
 
 
 

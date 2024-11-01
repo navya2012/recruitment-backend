@@ -7,7 +7,8 @@ const { profileImageModel } = require("../models/usersSchema")
 const getAllJobRecruitmentPosts = async (req, res) => {
     try {
         const getAllJobPostsData = await jobRecruitmentModel.find()
-        res.status(200).json({ getAllJobPostsData })
+        const allJobPostsCount= getAllJobPostsData.length
+        res.status(200).json({allJobPostsCount, getAllJobPostsData })
     }
     catch (err) {
         res.status(400).json({ error: err.message })
