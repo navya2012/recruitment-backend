@@ -140,7 +140,6 @@ const getAllJobAppliedPostsPostedByEmployer = async (req, res) => {
             hasApplied: true,
             employer_id: employer_id
         })
-        console.log(appliedJobPostsList)
 
         const jobAppliedPostsList = appliedJobPostsList.map(job => ({
             hasApplied: true,
